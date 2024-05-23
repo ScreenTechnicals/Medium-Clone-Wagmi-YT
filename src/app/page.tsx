@@ -1,64 +1,29 @@
-import { Button } from "@/components";
-import Image from "next/image";
+"use client";
+
+import { PostCard } from "@/components";
+import { usePostOperations } from "@/hooks/use-post-operations.hook";
+import { formatUnits } from "viem";
 
 export default function HomePage() {
+  const { useGetPosts } = usePostOperations();
+
+  const { data, isLoading } = useGetPosts();
+
   return (
     <main className="w-full min-h-screen md:px-10 py-5 p-5">
-      <p className="mx-auto md:w-8/12 text-center pt-20 pb-5 font-extralight text-xl md:text-5xl">
-        Built With{" "}
-        <a
-          href="http://"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-bold"
-        >
-          Next Js
-        </a>
-        ,{" "}
-        <a
-          href="http://"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-bold"
-        >
-          Tailwind CSS
-        </a>
-        ,{" "}
-        <a
-          href="http://"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-bold"
-        >
-          Wagmi
-        </a>
-        ,{" "}
-        <a
-          href="http://"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-bold"
-        >
-          Viem
-        </a>{" "}
-        &{" "}
-        <a
-          href="http://"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-bold"
-        >
-          Rainbowkit
-        </a>
-      </p>
-      <div className="text-center pt-5">
-        <a
-          href=""
-          target="_blank"
-          className="border px-6 py-3 rounded-md mt-2 border-[#272727] hover:bg-[#272727] transition-all"
-        >
-          See Examples
-        </a>
+      <div className="mx-auto w-[50%] ">
+        {data?.map((post) => {
+          return (
+            <PostCard
+              key={post?.id}
+              title={post?.title}
+              content={post?.content}
+              id={Number(formatUnits(post?.id, 0))}
+              image={post?.image}
+              author={post?.author!}
+            />
+          );
+        })}
       </div>
     </main>
   );
